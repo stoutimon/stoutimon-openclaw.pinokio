@@ -1,31 +1,20 @@
-module.exports = {
-  daemon: true,
-  run: [
-    {
+module.exports = async (kernel) => {
+  return {
+    "daemon": true,
+    "run": [{
       "method": "shell.run",
       "params": {
-        "message": "openclaw gateway run",
-        "on": [{
-          "event": "/listening on.*(ws:\\/\\/[0-9.:]+)/i",
-          "done": true
-        }]
+        "path": ".",
+        "message": "openclaw start",
+        "on": [
+          { "event": "/Gateway running|server started/i", "done": true }
+        ]
       }
-    },
-    {
-      "method": "shell.run",
-      "params": {
-        "message": "openclaw dashboard",
-        "on": [{
-          "event": "/(http:\\/\\/\\S+)/",
-          "done": true
-        }]
-      }
-    },
-    {
+    }, {
       "method": "local.set",
       "params": {
-        "url": "{{input.event[1]}}"
+        "url": "http://127.0.0.1:3000"   // Change if OpenClaw uses a different default port
       }
-    }
-  ]
+    }]
+  }
 }
