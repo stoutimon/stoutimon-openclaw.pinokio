@@ -1,14 +1,28 @@
-module.exports = {
-  "run": [{
-    "method": "shell.run",
-    "params": {
-      "venv": "env",
-      "venv_python": "3.11",
-      "path": "app",
-      "message": [
-        "uv pip install open-webui -U",
-        "uv pip install onnxruntime==1.20.1 itsdangerous"
-      ]
+{
+  "run": [
+    {
+      "method": "shell.run",
+      "params": {
+        "message": "npm i -g openclaw@latest"
+      }
+    },
+    {
+      "method": "shell.run",
+      "params": {
+        "input": true,
+        "message": "openclaw onboard --skip-ui",
+        "on": [{
+          "event": "/.*onboarding complete.*/i",
+          "kill": true
+        }]
+      }
+    },
+    {
+      "method": "modal",
+      "params": {
+        "title": "Onboarding Complete",
+        "description": "Now click the 'start' tab to get started"
+      }
     }
-  }]
+  ]
 }
