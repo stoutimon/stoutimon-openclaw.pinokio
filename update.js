@@ -1,19 +1,16 @@
 module.exports = {
-  run: [{
-    method: "shell.run",
-    params: {
-      message: "git pull"
+  run: [
+    {
+      method: "shell.run",
+      params: {
+        message: "git pull"
+      }
+    },
+    {
+      method: "shell.run",
+      params: {
+        message: "npm i -g openclaw@latest"
+      }
     }
-  }, {
-    method: "shell.run",
-    params: {
-      venv: "env",
-      venv_python: "3.11",
-      path: "app",
-      message: [
-        "uv pip install open-webui -U --force-reinstall",
-        "uv pip install onnxruntime==1.20.1"
-      ]
-    }
-  }]
+  ]
 }
