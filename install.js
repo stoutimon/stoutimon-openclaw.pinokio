@@ -1,9 +1,9 @@
-{
+module.exports = {
   "run": [
     {
       "method": "shell.run",
       "params": {
-        "message": "npm i -g openclaw@latest"
+        "message": "npm install -g openclaw@latest"
       }
     },
     {
@@ -11,17 +11,23 @@
       "params": {
         "input": true,
         "message": "openclaw onboard --skip-ui",
-        "on": [{
-          "event": "/.*onboarding complete.*/i",
-          "kill": true
-        }]
+        "on": [
+          {
+            "event": "/.*onboarding complete.*/i",
+            "kill": true
+          },
+          {
+            "event": "/.*onboarded successfully.*/i",
+            "kill": true
+          }
+        ]
       }
     },
     {
       "method": "modal",
       "params": {
-        "title": "Onboarding Complete",
-        "description": "Now click the 'start' tab to get started"
+        "title": "✅ OpenClaw Onboarding Complete",
+        "description": "Installation finished!\n\nClick the **Start** button to launch OpenClaw."
       }
     }
   ]
