@@ -1,24 +1,30 @@
 const path = require('path')
 
 module.exports = {
-  version: "1.0.0",
+  version: "1.0.1",
   title: "OpenClaw",
-  description: "Open source Clawd / OpenClaw installer for Pinokio",
+  description: "OpenClaw (formerly ClawdBot) - Personal AI Assistant",
   icon: "icon.png",
 
   menu: async (kernel, info) => {
     let installing = info.running("install.js")
-    // Since you're installing globally with npm, we check if openclaw command exists
-    let installed = info.exists("node_modules/.bin/openclaw") || 
-                   info.exists("~/.npm-global/bin/openclaw") || true // fallback
     let running = info.running("start.js")
     let updating = info.running("update.js")
+
+    // Better detection for globally installed npm package
+    let installed = false
+    try {
+      installed = await kernel.shell.run({
+        message: "openclaw --version",
+        silent: true
+      }).then(() => true).catch(() => false)
+    } catch (e) {}
 
     if (installing) {
       return [{
         default: true,
         icon: "fa-solid fa-plug",
-        text: "Installing...",
+        text: "Installing OpenClaw...",
         href: "install.js",
       }]
     } 
@@ -29,7 +35,7 @@ module.exports = {
         popout: true,
         icon: "fa-solid fa-rocket",
         text: "Open OpenClaw Dashboard",
-        href: local?.url || "start.js",
+        href: local?.url || "#",
       }, {
         icon: "fa-solid fa-terminal",
         text: "Terminal",
@@ -40,7 +46,7 @@ module.exports = {
         href: "update.js",
       }]
     } 
-    else {
+    else if (installed) {
       return [{
         default: true,
         icon: "fa-solid fa-power-off",
@@ -53,6 +59,14 @@ module.exports = {
       }, {
         icon: "fa-solid fa-plug",
         text: "Reinstall",
+        href: "install.js",
+      }]
+    } 
+    else {
+      return [{
+        default: true,
+        icon: "fa-solid fa-plug",
+        text: "Install OpenClaw",
         href: "install.js",
       }]
     }
