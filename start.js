@@ -7,7 +7,7 @@ module.exports = async (kernel) => {
         "path": ".",
         "message": "openclaw gateway start",
         "on": [
-          { "event": "/Gateway online|gateway started|running/i", "done": true }
+          { "event": "/Gateway online|gateway started|online|listening/i", "done": true }
         ]
       }
     }, {
